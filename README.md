@@ -40,44 +40,7 @@ Cadernodemusculao/
 └── postcss.config.mjs
 ```
 
-## ⚙️ Pré-requisitos
-
-- [Node.js](https://nodejs.org/) (versão recomendada: 18+)
-- [npm](https://www.npmjs.com/) ou [pnpm](https://pnpm.io/)
-- Conta no [Supabase](https://supabase.com/) com projeto configurado
-
-## 🛠️ Instalação e Execução
-
-1. Clone o repositório:
-```bash
-git clone https://github.com/IanBorgess/Cadernodemusculao.git
-cd Cadernodemusculao
-```
-
-2. Instale as dependências:
-```bash
-npm install
-```
-
-3. Configure as variáveis de ambiente criando um arquivo `.env` na raiz:
-```env
-VITE_SUPABASE_URL=sua_supabase_url
-VITE_SUPABASE_ANON_KEY=sua_anon_key
-```
-
-4. Inicie o servidor de desenvolvimento:
-```bash
-npm run dev
-```
-
-5. Acesse `http://localhost:5173` no navegador.
-
-## 📦 Scripts Disponíveis
-
-| Script | Descrição |
-|--------|-----------|
-| `npm run dev` | Inicia o servidor de desenvolvimento |
-| `npm run build` | Gera o build de produção |
+## ⚙️ [Link para o Aplicativo](https://panel-slept-45172782.figma.site/login)
 
 ## 🔌 API (Funções Serverless)
 
@@ -123,9 +86,12 @@ O projeto utiliza um KV Store sobre o Supabase (`kv_store`) com as seguintes ope
 
 ## 🔗 Links
 
-- [Design original no Figma](https://www.figma.com/design/fmyGOfuNOILNr6GW7dpOQz/Caderno-de-Muscula%C3%A7%C3%A3o--c%C3%B3pia-)
 - [Painel do Supabase](https://supabase.com/dashboard/project/mbdmxdymavamxdozkmkk/database/tables)
 
-## 👤 Autor
+## 👤 Autores
 
 **Ian Borges** — [@IanBorgess](https://github.com/IanBorgess)
+**Daniel Martins**
+**Igor Hagge**
+**Kaua Sampaio**
+**Pedro Felipe**
