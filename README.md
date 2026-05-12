@@ -90,7 +90,7 @@ O projeto utiliza um KV Store sobre o Supabase (`kv_store`) com as seguintes ope
 
 ## 👤 Autores
 
-**Ian Borges** — [@IanBorgess](https://github.com/IanBorgess)
+- **Ian Borges** — [@IanBorgess](https://github.com/IanBorgess)
 - **Daniel Martins**
 - **Igor Hagge**
 - **Kaua Sampaio**
