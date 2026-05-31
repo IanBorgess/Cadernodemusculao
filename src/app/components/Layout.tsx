@@ -6,9 +6,7 @@ export function Layout() {
   const location = useLocation();
   const { user, signOut } = useAuth();
 
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
+  const isActive = (path: string) => location.pathname === path;
 
   const handleSignOut = async () => {
     if (confirm('Deseja sair da sua conta?')) {
@@ -16,68 +14,69 @@ export function Layout() {
     }
   };
 
+  const navItems = [
+    { to: '/', icon: Dumbbell, label: 'Treinos' },
+    { to: '/history', icon: History, label: 'Histórico' },
+    { to: '/progress', icon: TrendingUp, label: 'Progresso' },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
-      <header className="bg-blue-600 text-white p-3 sm:p-4 shadow-md">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <Dumbbell className="w-6 h-6 sm:w-8 sm:h-8" />
+      <header className="bg-blue-600 text-white shadow-md" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+        <div className="flex items-center justify-between px-4 h-14">
+          <div className="flex items-center gap-2">
+            <div className="bg-blue-500 rounded-xl p-1.5">
+              <Dumbbell className="w-5 h-5" />
+            </div>
             <div>
-              <h1 className="text-lg sm:text-2xl font-bold">Caderno de Musculação</h1>
+              <h1 className="text-base font-bold leading-tight">Caderno de Musculação</h1>
               {user && (
-                <p className="text-xs sm:text-sm text-blue-100">Olá, {user.name || user.email}!</p>
+                <p className="text-xs text-blue-200 leading-tight">Olá, {user.name?.split(' ')[0] || user.email}</p>
               )}
             </div>
           </div>
           <button
             onClick={handleSignOut}
-            className="p-2 hover:bg-blue-700 rounded-lg transition flex items-center gap-1 sm:gap-2 text-sm"
-            title="Sair"
+            className="p-2 rounded-xl bg-blue-500 active:bg-blue-400 touch-manipulation"
+            aria-label="Sair"
           >
-            <LogOut className="w-4 h-4 sm:w-5 sm:h-5" />
-            <span className="hidden sm:inline">Sair</span>
+            <LogOut className="w-5 h-5" />
           </button>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 max-w-4xl w-full mx-auto p-3 sm:p-4 pb-20 sm:pb-24">
+      <main className="flex-1 px-4 pt-4 pb-28 max-w-xl mx-auto w-full">
         <Outlet />
       </main>
 
       {/* Bottom Navigation */}
-      <nav className="bg-white border-t border-gray-200 shadow-lg fixed bottom-0 left-0 right-0 z-50">
-        <div className="max-w-4xl mx-auto flex justify-around">
-          <Link
-            to="/"
-            className={`flex flex-col items-center p-3 sm:p-4 flex-1 ${
-              isActive('/') ? 'text-blue-600' : 'text-gray-500'
-            }`}
-          >
-            <Dumbbell className="w-5 h-5 sm:w-6 sm:h-6" />
-            <span className="text-xs mt-1">Treinos</span>
-          </Link>
-          
-          <Link
-            to="/history"
-            className={`flex flex-col items-center p-3 sm:p-4 flex-1 ${
-              isActive('/history') ? 'text-blue-600' : 'text-gray-500'
-            }`}
-          >
-            <History className="w-5 h-5 sm:w-6 sm:h-6" />
-            <span className="text-xs mt-1">Histórico</span>
-          </Link>
-          
-          <Link
-            to="/progress"
-            className={`flex flex-col items-center p-3 sm:p-4 flex-1 ${
-              isActive('/progress') ? 'text-blue-600' : 'text-gray-500'
-            }`}
-          >
-            <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6" />
-            <span className="text-xs mt-1">Progresso</span>
-          </Link>
+      <nav
+        className="bg-white border-t border-gray-200 fixed bottom-0 left-0 right-0 z-50"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+      >
+        <div className="flex justify-around max-w-xl mx-auto">
+          {navItems.map(({ to, icon: Icon, label }) => {
+            const active = isActive(to);
+            return (
+              <Link
+                key={to}
+                to={to}
+                className={`flex flex-col items-center gap-0.5 py-2 flex-1 touch-manipulation transition-colors ${
+                  active ? 'text-blue-600' : 'text-gray-400'
+                }`}
+              >
+                <div className={`p-1.5 rounded-xl transition-colors ${active ? 'bg-blue-50' : ''}`}>
+                  <Icon className="w-6 h-6" />
+                </div>
+                <span className={`text-[10px] font-medium ${active ? 'text-blue-600' : 'text-gray-400'}`}>
+                  {label}
+                </span>
+                {active && <div className="w-1 h-1 rounded-full bg-blue-600 mt-0.5" />}
+              </Link>
+            );
+          })}
         </div>
       </nav>
     </div>

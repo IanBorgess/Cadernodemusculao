@@ -23,13 +23,11 @@ export function SignUp() {
       setLoading(false);
       return;
     }
-
     if (password.length < 6) {
       setError('A senha deve ter pelo menos 6 caracteres');
       setLoading(false);
       return;
     }
-
     if (password !== confirmPassword) {
       setError('As senhas não coincidem');
       setLoading(false);
@@ -37,111 +35,67 @@ export function SignUp() {
     }
 
     const result = await signUp(email, password, name);
-    
     if (result.success) {
       navigate('/');
     } else {
       setError(result.error || 'Erro ao criar conta');
     }
-    
     setLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-8">
-        <div className="text-center mb-6 sm:mb-8">
-          <div className="bg-blue-600 w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Dumbbell className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Criar Conta</h1>
-          <p className="text-sm sm:text-base text-gray-600">Comece sua jornada fitness hoje!</p>
+    <div
+      className="min-h-screen bg-gradient-to-b from-blue-600 to-blue-800 flex flex-col"
+      style={{ paddingTop: 'env(safe-area-inset-top)', paddingBottom: 'env(safe-area-inset-bottom)' }}
+    >
+      {/* Top branding area */}
+      <div className="flex flex-col items-center justify-center px-6 pt-10 pb-6">
+        <div className="bg-white/20 backdrop-blur-sm w-16 h-16 rounded-3xl flex items-center justify-center mb-3 shadow-lg">
+          <Dumbbell className="w-8 h-8 text-white" />
         </div>
+        <h1 className="text-2xl font-bold text-white mb-1">Criar Conta</h1>
+        <p className="text-blue-200 text-sm">Comece sua jornada fitness hoje!</p>
+      </div>
 
+      {/* Form card */}
+      <div className="bg-white rounded-t-3xl px-6 pt-7 pb-8 shadow-2xl flex-1">
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            <div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-xl text-sm font-medium">
               {error}
             </div>
           )}
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Nome
-            </label>
-            <div className="relative">
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Seu nome"
-                className="w-full pl-10 pr-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                autoComplete="name"
-              />
+          {[
+            { label: 'Nome', value: name, onChange: setName, type: 'text', placeholder: 'Seu nome', icon: User, autoComplete: 'name' },
+            { label: 'E-mail', value: email, onChange: setEmail, type: 'email', placeholder: 'seu@email.com', icon: Mail, autoComplete: 'email' },
+            { label: 'Senha', value: password, onChange: setPassword, type: 'password', placeholder: '••••••••', icon: Lock, autoComplete: 'new-password', hint: 'Mínimo 6 caracteres' },
+            { label: 'Confirmar Senha', value: confirmPassword, onChange: setConfirmPassword, type: 'password', placeholder: '••••••••', icon: Lock, autoComplete: 'new-password' },
+          ].map(({ label, value, onChange, type, placeholder, icon: Icon, autoComplete, hint }) => (
+            <div key={label}>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">{label}</label>
+              <div className="relative">
+                <Icon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type={type}
+                  inputMode={type === 'email' ? 'email' : undefined}
+                  value={value}
+                  onChange={(e) => onChange(e.target.value)}
+                  placeholder={placeholder}
+                  className="w-full pl-11 pr-4 py-3.5 text-base border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+                  autoComplete={autoComplete}
+                />
+              </div>
+              {hint && <p className="text-xs text-gray-400 mt-1 pl-1">{hint}</p>}
             </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              E-mail
-            </label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="seu@email.com"
-                className="w-full pl-10 pr-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                autoComplete="email"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Senha
-            </label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                autoComplete="new-password"
-              />
-            </div>
-            <p className="text-xs text-gray-500 mt-1">Mínimo 6 caracteres</p>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Confirmar Senha
-            </label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                autoComplete="new-password"
-              />
-            </div>
-          </div>
+          ))}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 touch-manipulation"
+            className="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-2 active:bg-blue-700 touch-manipulation disabled:opacity-50 shadow-md mt-2"
           >
-            {loading ? (
-              'Criando conta...'
-            ) : (
+            {loading ? 'Criando conta...' : (
               <>
                 <UserPlus className="w-5 h-5" />
                 Criar Conta
@@ -150,14 +104,12 @@ export function SignUp() {
           </button>
         </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-sm sm:text-base text-gray-600">
-            Já tem uma conta?{' '}
-            <Link to="/login" className="text-blue-600 font-semibold hover:text-blue-700">
-              Entrar
-            </Link>
-          </p>
-        </div>
+        <p className="text-center text-sm text-gray-500 mt-6">
+          Já tem uma conta?{' '}
+          <Link to="/login" className="text-blue-600 font-bold">
+            Entrar
+          </Link>
+        </p>
       </div>
     </div>
   );

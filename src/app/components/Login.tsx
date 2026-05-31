@@ -23,63 +23,63 @@ export function Login() {
     }
 
     const result = await signIn(email, password);
-    
     if (result.success) {
       navigate('/');
     } else {
       setError(result.error || 'Erro ao fazer login');
     }
-    
     setLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-8">
-        <div className="text-center mb-6 sm:mb-8">
-          <div className="bg-blue-600 w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Dumbbell className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Bem-vindo de volta!</h1>
-          <p className="text-sm sm:text-base text-gray-600">Entre para continuar seus treinos</p>
+    <div
+      className="min-h-screen bg-gradient-to-b from-blue-600 to-blue-800 flex flex-col"
+      style={{ paddingTop: 'env(safe-area-inset-top)', paddingBottom: 'env(safe-area-inset-bottom)' }}
+    >
+      {/* Top branding area */}
+      <div className="flex flex-col items-center justify-center flex-1 px-6 pt-12 pb-6">
+        <div className="bg-white/20 backdrop-blur-sm w-20 h-20 rounded-3xl flex items-center justify-center mb-4 shadow-lg">
+          <Dumbbell className="w-10 h-10 text-white" />
         </div>
+        <h1 className="text-3xl font-bold text-white mb-1">Bem-vindo!</h1>
+        <p className="text-blue-200 text-sm">Entre para continuar seus treinos</p>
+      </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+      {/* Form card */}
+      <div className="bg-white rounded-t-3xl px-6 pt-8 pb-8 shadow-2xl">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            <div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-xl text-sm font-medium">
               {error}
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              E-mail
-            </label>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">E-mail</label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="email"
+                inputMode="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="seu@email.com"
-                className="w-full pl-10 pr-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-11 pr-4 py-3.5 text-base border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
                 autoComplete="email"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Senha
-            </label>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Senha</label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-11 pr-4 py-3.5 text-base border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
                 autoComplete="current-password"
               />
             </div>
@@ -88,11 +88,9 @@ export function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 touch-manipulation"
+            className="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-2 active:bg-blue-700 touch-manipulation disabled:opacity-50 shadow-md mt-2"
           >
-            {loading ? (
-              'Entrando...'
-            ) : (
+            {loading ? 'Entrando...' : (
               <>
                 <LogIn className="w-5 h-5" />
                 Entrar
@@ -101,14 +99,12 @@ export function Login() {
           </button>
         </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-sm sm:text-base text-gray-600">
-            Não tem uma conta?{' '}
-            <Link to="/signup" className="text-blue-600 font-semibold hover:text-blue-700">
-              Cadastre-se
-            </Link>
-          </p>
-        </div>
+        <p className="text-center text-sm text-gray-500 mt-6">
+          Não tem uma conta?{' '}
+          <Link to="/signup" className="text-blue-600 font-bold">
+            Cadastre-se
+          </Link>
+        </p>
       </div>
     </div>
   );

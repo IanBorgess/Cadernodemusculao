@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
-import { ArrowLeft, Check, Plus, Minus } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Plus, Minus } from 'lucide-react';
 import { Workout, WorkoutSession, Exercise } from '../types';
 import { storage } from '../utils/storage';
 import { useAuth } from '../contexts/AuthContext';
@@ -31,14 +31,7 @@ export function StartWorkout() {
     setSessionExercises(exercises =>
       exercises.map(e =>
         e.id === exerciseId
-          ? {
-              ...e,
-              sets: e.sets.map(s =>
-                s.id === setId
-                  ? { ...s, [field]: Math.max(0, s[field] + delta) }
-                  : s
-              )
-            }
+          ? { ...e, sets: e.sets.map(s => s.id === setId ? { ...s, [field]: Math.max(0, s[field] + delta) } : s) }
           : e
       )
     );
@@ -48,7 +41,7 @@ export function StartWorkout() {
     if (!workout || !user) return;
 
     const endTime = new Date();
-    const duration = Math.round((endTime.getTime() - startTime.getTime()) / 1000 / 60); // em minutos
+    const duration = Math.round((endTime.getTime() - startTime.getTime()) / 1000 / 60);
 
     const session: WorkoutSession = {
       id: Date.now().toString(),
@@ -61,35 +54,32 @@ export function StartWorkout() {
     };
 
     storage.addSession(session, user.id);
-    
     alert(`Treino concluído! Duração: ${duration} minutos`);
     navigate('/history');
   };
 
   if (!workout) {
-    return <div>Carregando...</div>;
+    return (
+      <div className="flex items-center justify-center h-40">
+        <div className="text-gray-400">Carregando...</div>
+      </div>
+    );
   }
 
   if (sessionExercises.length === 0) {
     return (
       <div className="space-y-4">
-        <div className="flex items-center gap-3 mb-4">
-          <button
-            onClick={() => navigate('/')}
-            className="p-2 hover:bg-gray-200 rounded-lg transition"
-          >
-            <ArrowLeft className="w-6 h-6" />
+        <div className="flex items-center gap-3">
+          <button onClick={() => navigate('/')} className="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 active:bg-gray-200 touch-manipulation">
+            <ArrowLeft className="w-5 h-5 text-gray-700" />
           </button>
-          <h2 className="text-2xl font-bold text-gray-800">Iniciar Treino</h2>
+          <h2 className="text-lg font-bold text-gray-800">Iniciar Treino</h2>
         </div>
-        
-        <div className="bg-white p-8 rounded-lg shadow-md text-center">
-          <p className="text-gray-500 mb-4">
-            Este treino não possui exercícios cadastrados.
-          </p>
+        <div className="bg-white p-10 rounded-2xl shadow-sm border border-gray-100 text-center">
+          <p className="text-gray-500 mb-5">Este treino não possui exercícios.</p>
           <button
             onClick={() => navigate(`/workout/${workout.id}`)}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+            className="bg-blue-600 text-white px-6 py-3 rounded-2xl font-semibold active:bg-blue-700 touch-manipulation"
           >
             Editar Treino
           </button>
@@ -99,103 +89,86 @@ export function StartWorkout() {
   }
 
   return (
-    <div className="space-y-4 pb-24">
-      <div className="flex items-center gap-2 sm:gap-3 mb-4">
+    <div className="space-y-4 pb-28">
+      {/* Header */}
+      <div className="flex items-center gap-3">
         <button
           onClick={() => navigate('/')}
-          className="p-2 hover:bg-gray-200 rounded-lg transition flex-shrink-0"
+          className="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 active:bg-gray-200 touch-manipulation flex-shrink-0"
         >
-          <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+          <ArrowLeft className="w-5 h-5 text-gray-700" />
         </button>
         <div className="flex-1 min-w-0">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-800 truncate">{workout.name}</h2>
-          <p className="text-xs sm:text-sm text-gray-500">Em andamento...</p>
+          <h2 className="text-lg font-bold text-gray-800 truncate">{workout.name}</h2>
+          <p className="text-xs text-green-600 font-medium">Em andamento 💪</p>
         </div>
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 p-3 sm:p-4 rounded-lg">
-        <p className="text-xs sm:text-sm text-blue-800">
-          💪 Ajuste as cargas e reps de cada série conforme necessário durante o treino.
-        </p>
-      </div>
-
-      <div className="space-y-3 sm:space-y-4">
+      {/* Exercises */}
+      <div className="space-y-3">
         {sessionExercises.map((exercise, index) => (
-          <div
-            key={exercise.id}
-            className="bg-white p-3 sm:p-4 rounded-lg shadow-md border border-gray-200"
-          >
-            <div className="flex items-start gap-2 sm:gap-3 mb-3 sm:mb-4">
-              <span className="bg-blue-600 text-white w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold flex-shrink-0">
+          <div key={exercise.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            {/* Exercise Header */}
+            <div className="flex items-center gap-3 px-4 py-3 bg-blue-600">
+              <span className="bg-white/30 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
                 {index + 1}
               </span>
               <div className="flex-1 min-w-0">
-                <h3 className="text-base sm:text-lg font-semibold text-gray-800 truncate">{exercise.name}</h3>
-                <p className="text-xs sm:text-sm text-gray-500">
-                  {exercise.sets.length} série(s)
-                </p>
+                <h3 className="text-base font-bold text-white truncate">{exercise.name}</h3>
                 {exercise.notes && (
-                  <p className="text-xs sm:text-sm text-gray-500 italic mt-1">💡 {exercise.notes}</p>
+                  <p className="text-xs text-blue-200">💡 {exercise.notes}</p>
                 )}
               </div>
             </div>
 
-            <div className="space-y-2 sm:space-y-3">
+            {/* Sets */}
+            <div className="divide-y divide-gray-100">
               {exercise.sets.map((set, setIndex) => (
-                <div key={set.id} className="bg-gray-50 p-2.5 sm:p-3 rounded-lg">
-                  <div className="text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                <div key={set.id} className="px-4 py-3">
+                  <div className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">
                     Série {setIndex + 1}
                   </div>
-                  
-                  <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                    {/* Repetições */}
-                    <div>
-                      <label className="block text-xs text-gray-600 mb-1">Repetições</label>
-                      <div className="flex items-center gap-1.5 sm:gap-2">
+                  <div className="grid grid-cols-2 gap-3">
+                    {/* Reps */}
+                    <div className="bg-gray-50 rounded-xl p-3">
+                      <p className="text-xs text-gray-500 text-center mb-2">Repetições</p>
+                      <div className="flex items-center justify-between gap-2">
                         <button
+                          onPointerDown={(e) => e.preventDefault()}
                           onClick={() => handleUpdateSet(exercise.id, set.id, 'reps', -1)}
-                          className="bg-red-100 text-red-600 p-1.5 sm:p-2 rounded-lg hover:bg-red-200 transition active:scale-95 touch-manipulation"
+                          className="w-11 h-11 bg-red-100 text-red-500 rounded-xl flex items-center justify-center active:bg-red-200 touch-manipulation"
                         >
-                          <Minus className="w-4 h-4" />
+                          <Minus className="w-5 h-5" />
                         </button>
-                        
-                        <div className="flex-1 text-center">
-                          <span className="text-xl sm:text-2xl font-bold text-gray-800">
-                            {set.reps}
-                          </span>
-                        </div>
-                        
+                        <span className="text-2xl font-bold text-gray-800 w-10 text-center">{set.reps}</span>
                         <button
+                          onPointerDown={(e) => e.preventDefault()}
                           onClick={() => handleUpdateSet(exercise.id, set.id, 'reps', 1)}
-                          className="bg-green-100 text-green-600 p-1.5 sm:p-2 rounded-lg hover:bg-green-200 transition active:scale-95 touch-manipulation"
+                          className="w-11 h-11 bg-green-100 text-green-600 rounded-xl flex items-center justify-center active:bg-green-200 touch-manipulation"
                         >
-                          <Plus className="w-4 h-4" />
+                          <Plus className="w-5 h-5" />
                         </button>
                       </div>
                     </div>
 
-                    {/* Carga */}
-                    <div>
-                      <label className="block text-xs text-gray-600 mb-1">Carga (kg)</label>
-                      <div className="flex items-center gap-1.5 sm:gap-2">
+                    {/* Weight */}
+                    <div className="bg-gray-50 rounded-xl p-3">
+                      <p className="text-xs text-gray-500 text-center mb-2">Carga (kg)</p>
+                      <div className="flex items-center justify-between gap-2">
                         <button
+                          onPointerDown={(e) => e.preventDefault()}
                           onClick={() => handleUpdateSet(exercise.id, set.id, 'weight', -2.5)}
-                          className="bg-red-100 text-red-600 p-1.5 sm:p-2 rounded-lg hover:bg-red-200 transition active:scale-95 touch-manipulation"
+                          className="w-11 h-11 bg-red-100 text-red-500 rounded-xl flex items-center justify-center active:bg-red-200 touch-manipulation"
                         >
-                          <Minus className="w-4 h-4" />
+                          <Minus className="w-5 h-5" />
                         </button>
-                        
-                        <div className="flex-1 text-center">
-                          <span className="text-xl sm:text-2xl font-bold text-gray-800">
-                            {set.weight}
-                          </span>
-                        </div>
-                        
+                        <span className="text-2xl font-bold text-gray-800 w-10 text-center">{set.weight}</span>
                         <button
+                          onPointerDown={(e) => e.preventDefault()}
                           onClick={() => handleUpdateSet(exercise.id, set.id, 'weight', 2.5)}
-                          className="bg-green-100 text-green-600 p-1.5 sm:p-2 rounded-lg hover:bg-green-200 transition active:scale-95 touch-manipulation"
+                          className="w-11 h-11 bg-green-100 text-green-600 rounded-xl flex items-center justify-center active:bg-green-200 touch-manipulation"
                         >
-                          <Plus className="w-4 h-4" />
+                          <Plus className="w-5 h-5" />
                         </button>
                       </div>
                     </div>
@@ -207,29 +180,32 @@ export function StartWorkout() {
         ))}
       </div>
 
-      <div className="bg-white p-3 sm:p-4 rounded-lg shadow-md border border-gray-200">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+      {/* Notes */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
           Observações do treino (opcional)
         </label>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Como foi o treino hoje? Alguma observação?"
-          className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-3 text-base border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 resize-none"
           rows={3}
         />
       </div>
 
-      <div className="fixed bottom-16 sm:bottom-20 left-0 right-0 bg-white border-t border-gray-200 p-3 sm:p-4 shadow-lg z-40">
-        <div className="max-w-4xl mx-auto">
-          <button
-            onClick={handleFinishWorkout}
-            className="w-full bg-green-600 text-white px-6 py-3 sm:py-4 rounded-lg flex items-center justify-center gap-2 hover:bg-green-700 transition font-semibold text-base sm:text-lg active:scale-95 touch-manipulation"
-          >
-            <Check className="w-5 h-5 sm:w-6 sm:h-6" />
-            Finalizar Treino
-          </button>
-        </div>
+      {/* Finish button — fixed above bottom nav */}
+      <div
+        className="fixed left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 z-40"
+        style={{ bottom: 'calc(env(safe-area-inset-bottom) + 64px)' }}
+      >
+        <button
+          onClick={handleFinishWorkout}
+          className="w-full bg-green-500 text-white py-4 rounded-2xl flex items-center justify-center gap-2 font-bold text-base active:bg-green-600 touch-manipulation shadow-md"
+        >
+          <CheckCircle2 className="w-6 h-6" />
+          Finalizar Treino
+        </button>
       </div>
     </div>
   );
