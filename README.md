@@ -4,6 +4,10 @@ Aplicação web para registro e acompanhamento de treinos de musculação, desen
 
 ---
 
+O apk do projeto está nos releases.
+
+---
+
 ## 📋 Requisitos
 
 Antes de começar, certifique-se de ter instalado em sua máquina:
