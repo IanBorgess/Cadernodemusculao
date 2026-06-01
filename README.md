@@ -23,37 +23,6 @@ Antes de começar, certifique-se de ter instalado em sua máquina:
 
 ## 🚀 Instalação e Execução Local
 
-### 1. Clone o repositório
-
-```bash
-git clone https://github.com/IanBorgess/Cadernodemusculao.git
-cd Cadernodemusculao
-```
-
-### 2. Instale as dependências
-
-```bash
-npm install
-```
-
-### 3. Configure as variáveis de ambiente
-
-Crie um arquivo `.env` na raiz do projeto com base no exemplo abaixo:
-
-```env
-VITE_SUPABASE_URL=https://SEU_PROJETO.supabase.co
-VITE_SUPABASE_ANON_KEY=sua_chave_anonima_aqui
-```
-
-> 💡 Você encontra esses valores no painel do Supabase em **Settings → API**.
-> Sem essas variáveis, o app não conseguirá se conectar ao banco de dados.
-
-### 4. Inicie o servidor de desenvolvimento
-
-```bash
-npm run dev
-```
-
 O aplicativo estará disponível em: **[cadernodemusculao.vercel.app](https://cadernodemusculao.vercel.app/login)**
 
 ---
@@ -115,21 +84,6 @@ O APK será gerado em:
 android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
----
-
-## ☁️ Deploy (Hospedagem Gratuita)
-
-### Vercel (recomendado)
-
-1. Acesse [vercel.com](https://vercel.com) e conecte sua conta do GitHub
-2. Importe o repositório **Cadernodemusculao**
-3. Em **Environment Variables**, adicione as variáveis do Supabase:
-   - `VITE_SUPABASE_URL`
-   - `VITE_SUPABASE_ANON_KEY`
-4. Clique em **Deploy**
-
----
-
 ## 🗂️ Estrutura do Projeto
 
 ```
@@ -159,18 +113,3 @@ Cadernodemusculao/
 - **Capacitor** — Geração de APK Android/iOS
 
 ---
-
-## ⚠️ Observações Importantes
-
-- **Nunca suba o arquivo `.env`** para o repositório. Ele contém chaves sensíveis do Supabase.
-- As pastas `dist/` e `android/` são geradas automaticamente e também não devem ser versionadas.
-- O projeto utiliza **pnpm** como gerenciador preferencial internamente, mas funciona normalmente com `npm`.
-- Caso encontre erros de dependências, tente limpar o cache: `npm cache clean --force` e reinstale com `npm install`.
-- Para o APK funcionar corretamente em produção, configure a URL do app hospedado no `capacitor.config.ts` antes de gerar o APK.
-
----
-
-## 📄 Licença
-
-Este projeto foi gerado a partir do template [figma/repo-template](https://github.com/figma/repo-template).
-Consulte o arquivo [ATTRIBUTIONS.md](./ATTRIBUTIONS.md) para informações sobre atribuições.
