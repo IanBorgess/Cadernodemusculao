@@ -4,7 +4,7 @@ Aplicação web para registro e acompanhamento de treinos de musculação, desen
 
 ---
 
-O apk do projeto está nos releases.
+O apk do projeto está nos releases. [apk do caderno de musculaçao](https://github.com/IanBorgess/Cadernodemusculao/releases/tag/1.0.0)
 
 ---
 
