@@ -54,7 +54,7 @@ VITE_SUPABASE_ANON_KEY=sua_chave_anonima_aqui
 npm run dev
 ```
 
-O aplicativo estará disponível em: **http://localhost:5173**
+O aplicativo estará disponível em: **[cadernodemusculao.vercel.app](https://cadernodemusculao.vercel.app/login)**
 
 ---
 
